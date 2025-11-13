@@ -32,12 +32,12 @@ namespace CppEvents
             });
         }
 
-        template<typename... CallArgs>
-        void notify(CallArgs&&... args)
+        void notify(const Args&... args)
         {
             for (auto& handler : listeners)
-                handler(std::forward<CallArgs>(args)...);
+                handler(args...);
         }
+
 
 
     private:
