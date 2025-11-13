@@ -26,17 +26,18 @@ namespace CppEvents
             void (T::*method)(FArgs...);
             std::tie(obj, method) = bound;
 
-            listeners.push_back([obj, method](Args... args)
+            listeners.push_back([obj, method](const Args&... args)
             {
-                (obj->*method)(args...);
+                (obj->*method)(args...); // Listeners must outlive the event they are subscribed to.
             });
         }
 
-        void notify(Args... args)
+        void notify(const Args&... args)
         {
             for (auto& handler : listeners)
                 handler(args...);
         }
+
 
 
     private:
