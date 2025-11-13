@@ -28,14 +28,15 @@ namespace CppEvents
 
             listeners.push_back([obj, method](Args... args)
             {
-                (obj->*method)(args...);
+                (obj->*method)(args...); // Listeners must outlive the event they are subscribed to.
             });
         }
 
-        void notify(Args... args)
+        template<typename... CallArgs>
+        void notify(CallArgs&&... args)
         {
             for (auto& handler : listeners)
-                handler(args...);
+                handler(std::forward<CallArgs>(args)...);
         }
 
 
