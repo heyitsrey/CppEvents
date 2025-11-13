@@ -15,8 +15,8 @@ Requires C++17 or later.
 
 ## Build example (C++17)
 
-g++ -std=c++17 demo_event_bus/main.cpp -o demo_bus -Iinclude
-g++ -std=c++17 demo_standalone/main.cpp -o demo_standalone -Iinclude
+g++ -std=c++17 demo/demo_event_bus/main.cpp -o demo_bus -Iinclude
+g++ -std=c++17 demo/demo_standalone/main.cpp -o demo_standalone -Iinclude
 
 ## License
 
