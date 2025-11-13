@@ -5,40 +5,43 @@
 #include <functional>
 #include <vector>
 
-template<typename... Args>
-class Event
+namespace CppEvents
 {
-public:
-    using Handler = std::function<void(Args...)>;
-
-    // Lambdas or free functions
-    void operator+=(Handler handler)
+    template<typename... Args>
+    class Event
     {
-        listeners.push_back(std::move(handler));
-    }
+    public:
+        using Handler = std::function<void(Args...)>;
 
-    // Memberfunctions and instance in one line
-    template<typename T, typename... FArgs>
-    void operator+=(std::pair<T*, void (T::*)(FArgs...)> bound) {
-        T* obj;
-        void (T::*method)(FArgs...);
-        std::tie(obj, method) = bound;
-
-        listeners.push_back([obj, method](Args... args)
+        // Lambdas or free functions
+        void operator+=(Handler handler)
         {
-            (obj->*method)(args...);
-        });
-    }
+            listeners.push_back(std::move(handler));
+        }
 
-    void notify(Args... args)
-    {
-        for (auto& handler : listeners)
-            handler(args...);
-    }
+        // Memberfunctions and instance in one line
+        template<typename T, typename... FArgs>
+        void operator+=(std::pair<T*, void (T::*)(FArgs...)> bound) {
+            T* obj;
+            void (T::*method)(FArgs...);
+            std::tie(obj, method) = bound;
+
+            listeners.push_back([obj, method](Args... args)
+            {
+                (obj->*method)(args...);
+            });
+        }
+
+        void notify(Args... args)
+        {
+            for (auto& handler : listeners)
+                handler(args...);
+        }
 
 
-private:
-    std::vector<Handler> listeners;
-};
+    private:
+        std::vector<Handler> listeners;
+    };
+}
 
 #endif //EVENTBUSCPP_EVENT_HPP

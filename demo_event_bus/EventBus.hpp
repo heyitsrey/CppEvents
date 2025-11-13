@@ -7,9 +7,9 @@
 
 struct EventBus
 {
-    Event<std::string> trainArrived;
-    Event<std::string> trainDeparted;
-    Event<int, std::string> passengerBoarded;
+    CppEvents::Event<std::string> trainArrived;
+    CppEvents::Event<std::string> trainDeparted;
+    CppEvents::Event<int, std::string> passengerBoarded;
 };
 
 #endif //EVENTBUSCPP_EVENTBUS_HPP
