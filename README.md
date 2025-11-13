@@ -1,17 +1,23 @@
-# EventBusCPP
+# CppEvents
 
-A lightweight, type-safe event system for C++.  
-Supports member functions, lambdas, and events with arbitrary parameters.  
+A lightweight, type-safe event system for C++, inspired by C# events.  
+Supports both single events and a centralized EventBus for multiple publishers and subscribers.
 Ideal for small to medium projects or as a template for your own event system.
+Requires C++17 or later.
 
 ## Features
 
+- Subscriber/Publisher system (optional EventBus)
 - Subscribe member functions directly (`+= std::pair(this, &Class::Method)`)
 - Supports lambdas and free functions as listeners
 - Multiple events and multiple publishers/subscribers
 - Header-only, easy to include in any project
 
-## Build example
+## Build example (C++17)
 
-g++ -std=c++17 demo/main.cpp -o demo
-./demo
+g++ -std=c++17 demo/demo_bus.cpp -o demo_bus
+g++ -std=c++17 demo/demo_standalone.cpp -o demo_standalone
+
+## License
+
+MIT License
