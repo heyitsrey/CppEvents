@@ -1,22 +1,39 @@
 # CppEvents
 
-A lightweight, type-safe event system for C++, inspired by C# events.  
-Supports both single events and a centralized EventBus for multiple publishers and subscribers.
-Ideal for small to medium projects or as a template for your own event system.
-Requires C++17 or later.
+A lightweight, thread-safe, header-only event system for C++17, inspired by C# events.  
+Supports both standalone events and a centralized `EventBus` pattern for multiple publishers and subscribers.
 
 ## Features
 
-- Subscriber/Publisher system (optional EventBus)
-- Subscribe member functions directly (`+= std::pair(this, &Class::Method)`)
-- Supports lambdas and free functions as listeners
-- Multiple events and multiple publishers/subscribers
-- Header-only, easy to include in any project
+- **Header-only & Zero Dependencies:** Simply include [`include/Event.hpp`](include/Event.hpp) in your project.
+- **C#-Style Syntax:** Subscribe with `+=` and unsubscribe with `-=`.
+- **Flexible Listeners:**
+  - Lambdas, free functions, and `std::function`
+  - Member functions (`const` and non-`const`) via `std::pair(this, &Class::method)`
+  - Smart pointers (`std::weak_ptr` and `std::shared_ptr`) via `std::pair(ptr, &Class::method)`
+- **RAII Lifetime Management:** Optional `ScopedConnection` via `subscribeScoped()` automatically disconnects when destroyed (safe regardless of destruction order).
+- **Thread-Safe & Re-entrant:** Protected by internal synchronization; listeners can safely subscribe or unsubscribe during event notification without deadlocks or iterator invalidation.
 
-## Build example (C++17)
+## Quick Start
 
-g++ -std=c++17 demo/demo_event_bus/main.cpp -o demo_bus -Iinclude
-g++ -std=c++17 demo/demo_standalone/main.cpp -o demo_standalone -Iinclude
+See [`demo/demo_event_bus`](demo/demo_event_bus), [`demo/demo_standalone`](demo/demo_standalone), and [`demo/demo_scoped`](demo/demo_scoped) for complete working examples.
+
+## Building the Demos
+
+### Using CMake
+
+```bash
+cmake -B build
+cmake --build build
+```
+
+### Using `g++` Directly (C++17)
+
+```bash
+g++ -std=c++17 -Iinclude demo/demo_event_bus/main.cpp -o demo_bus
+g++ -std=c++17 -Iinclude demo/demo_standalone/main.cpp -o demo_standalone
+g++ -std=c++17 -Iinclude demo/demo_scoped/main.cpp -o demo_scoped
+```
 
 ## License
 
