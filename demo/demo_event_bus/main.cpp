@@ -1,21 +1,21 @@
+#include "DisplayBoard.hpp"
 #include "Logger.hpp"
 #include "RailwaySystem.hpp"
-#include "DisplayBoard.hpp"
 #include "TicketSystem.hpp"
 
 int main()
 {
     EventBus bus;
 
-    // Subscriber
+    // Subscribers
     Logger logger(bus);
     DisplayBoard display(bus);
 
-    // Publisher
+    // Publishers
     RailwaySystem railway(bus);
     TicketSystem ticket(bus);
 
-    // Trigger Events
+    // Trigger events
     railway.arriveTrain("Train 794");
     ticket.boardPassenger(42, "Train 794");
     railway.departTrain("Train 794");

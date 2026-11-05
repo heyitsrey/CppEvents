@@ -1,5 +1,5 @@
-#ifndef EVENTBUSCPP_EVENTBUS_HPP
-#define EVENTBUSCPP_EVENTBUS_HPP
+#ifndef CPPEVENTS_DEMO_EVENTBUS_HPP
+#define CPPEVENTS_DEMO_EVENTBUS_HPP
 
 #include <string>
 
@@ -12,4 +12,4 @@ struct EventBus
     CppEvents::Event<int, std::string> passengerBoarded;
 };
 
-#endif //EVENTBUSCPP_EVENTBUS_HPP
+#endif // CPPEVENTS_DEMO_EVENTBUS_HPP

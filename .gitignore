@@ -37,8 +37,22 @@
 *.out
 *.app
 
-# debug information files
+# Debug information files
 *.dwo
 
-# JetBrains Files
+# Build directories
+build/
+out/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.ninja
+.ninja_*
+
+# IDE / Editor directories
 /.idea/*
+.vscode/
+.vs/
+CMakeUserPresets.json

@@ -1,35 +1,39 @@
-#ifndef EVENTBUSCPP_RAILWAYSYSTEM_HPP
-#define EVENTBUSCPP_RAILWAYSYSTEM_HPP
+#ifndef CPPEVENTS_DEMO_RAILWAYSYSTEM_HPP
+#define CPPEVENTS_DEMO_RAILWAYSYSTEM_HPP
 
 #include <iostream>
+#include <string>
 
 #include "EventBus.hpp"
 
 class RailwaySystem
 {
 public:
-    explicit RailwaySystem(EventBus& bus) : bus(bus) {}
+    explicit RailwaySystem(EventBus& bus)
+        : bus_(bus)
+    {
+    }
 
     void arriveTrain(const std::string& name) const
     {
-        std::cout << "[RailwaySystem] " << name << " arrived." << std::endl;
-        bus.trainArrived.notify(name);
+        std::cout << "[RailwaySystem] " << name << " arrived.\n";
+        bus_.trainArrived.notify(name);
     }
 
     void departTrain(const std::string& name) const
     {
-        std::cout << "[RailwaySystem] " << name << " departed." << std::endl;
-        bus.trainDeparted.notify(name);
+        std::cout << "[RailwaySystem] " << name << " departed.\n";
+        bus_.trainDeparted.notify(name);
     }
 
     void boardPassenger(int id, const std::string& name) const
     {
-        std::cout << "[RailwaySystem] Passenger " << id << " boarded in train " << name << "." << std::endl;
-        bus.passengerBoarded.notify(id, name);
+        std::cout << "[RailwaySystem] Passenger " << id << " boarded in train " << name << ".\n";
+        bus_.passengerBoarded.notify(id, name);
     }
 
 private:
-    EventBus& bus;
+    EventBus& bus_;
 };
 
-#endif //EVENTBUSCPP_RAILWAYSYSTEM_HPP
+#endif // CPPEVENTS_DEMO_RAILWAYSYSTEM_HPP

@@ -1,5 +1,5 @@
-#ifndef EVENTBUSCPP_ALARM_HPP
-#define EVENTBUSCPP_ALARM_HPP
+#ifndef CPPEVENTS_DEMO_ALARM_HPP
+#define CPPEVENTS_DEMO_ALARM_HPP
 
 #include <string>
 
@@ -8,12 +8,12 @@
 class Alarm
 {
 public:
-    CppEvents::Event<const std::string&> triggered;
+    CppEvents::Event<std::string> triggered;
 
-    void trigger(const std::string& message)
+    void trigger(const std::string& message) const
     {
         triggered.notify(message);
     }
 };
 
-#endif //EVENTBUSCPP_ALARM_HPP
+#endif // CPPEVENTS_DEMO_ALARM_HPP
