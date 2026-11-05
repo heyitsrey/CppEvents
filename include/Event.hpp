@@ -174,7 +174,7 @@ namespace CppEvents
         ConnectionId operator+=(std::pair<std::weak_ptr<T>, Method> bound)
         {
             Method method = bound.second;
-            if (!method)
+            if (bound.first.expired() || !method)
             {
                 return InvalidConnectionId;
             }

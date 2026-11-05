@@ -34,3 +34,24 @@ add_executable(demo_scoped
         include/Event.hpp
         demo/demo_scoped/main.cpp)
 target_link_libraries(demo_scoped PRIVATE CppEvents)
+
+# Unit Tests (GoogleTest)
+enable_testing()
+
+include(FetchContent)
+FetchContent_Declare(
+        googletest
+        URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip
+        DOWNLOAD_EXTRACT_TIMESTAMP TRUE
+)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
+add_executable(test_event
+        include/Event.hpp
+        tests/test_event.cpp)
+target_link_libraries(test_event PRIVATE CppEvents GTest::gtest_main)
+
+include(GoogleTest)
+gtest_discover_tests(test_event)

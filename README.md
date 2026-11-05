@@ -18,13 +18,14 @@ Supports both standalone events and a centralized `EventBus` pattern for multipl
 
 See [`demo/demo_event_bus`](demo/demo_event_bus), [`demo/demo_standalone`](demo/demo_standalone), and [`demo/demo_scoped`](demo/demo_scoped) for complete working examples.
 
-## Building the Demos
+## Building the Demos & Running Tests
 
-### Using CMake
+### Using CMake & CTest
 
 ```bash
 cmake -B build
 cmake --build build
+ctest --test-dir build --output-on-failure
 ```
 
 ### Using `g++` Directly (C++17)
