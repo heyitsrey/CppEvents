@@ -1,30 +1,52 @@
-#ifndef EVENTBUSCPP_LOGGER_HPP
-#define EVENTBUSCPP_LOGGER_HPP
+#ifndef CPPEVENTS_DEMO_LOGGER_HPP
+#define CPPEVENTS_DEMO_LOGGER_HPP
 
 #include <iostream>
+#include <string>
 
 #include "EventBus.hpp"
 
-class Logger {
+class Logger
+{
 public:
-    Logger(EventBus& bus)
+    explicit Logger(EventBus& bus)
+        : bus_(bus)
     {
-        bus.trainArrived += std::pair(this, &Logger::onTrainArrived);
-        bus.trainDeparted   += std::pair(this, &Logger::onTrainDeparted);
-        bus.passengerBoarded += std::pair(this, &Logger::onPassengerBoarded);
+        arrivedId_  = bus_.trainArrived     += std::pair(this, &Logger::onTrainArrived);
+        departedId_ = bus_.trainDeparted    += std::pair(this, &Logger::onTrainDeparted);
+        boardedId_  = bus_.passengerBoarded += std::pair(this, &Logger::onPassengerBoarded);
     }
 
-    void onTrainArrived(const std::string& name) {
-        std::cout << "[Logger] " << name << " arrived." << std::endl;
+    ~Logger()
+    {
+        bus_.trainArrived     -= arrivedId_;
+        bus_.trainDeparted    -= departedId_;
+        bus_.passengerBoarded -= boardedId_;
     }
 
-    void onTrainDeparted(const std::string& name) {
-        std::cout << "[Logger] " << name << " departed." << std::endl;
+    Logger(const Logger&) = delete;
+    Logger& operator=(const Logger&) = delete;
+
+    void onTrainArrived(const std::string& name) const
+    {
+        std::cout << "[Logger] " << name << " arrived.\n";
     }
 
-    void onPassengerBoarded(int id, const std::string& name) {
-        std::cout << "[Logger] Passenger " << id << " boarded in train " << name << "." << std::endl;
+    void onTrainDeparted(const std::string& name) const
+    {
+        std::cout << "[Logger] " << name << " departed.\n";
     }
+
+    void onPassengerBoarded(int id, const std::string& name) const
+    {
+        std::cout << "[Logger] Passenger " << id << " boarded in train " << name << ".\n";
+    }
+
+private:
+    EventBus& bus_;
+    CppEvents::Event<std::string>::ConnectionId arrivedId_{0};
+    CppEvents::Event<std::string>::ConnectionId departedId_{0};
+    CppEvents::Event<int, std::string>::ConnectionId boardedId_{0};
 };
 
-#endif //EVENTBUSCPP_LOGGER_HPP
+#endif // CPPEVENTS_DEMO_LOGGER_HPP

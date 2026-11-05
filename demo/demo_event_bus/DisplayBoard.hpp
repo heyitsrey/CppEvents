@@ -1,7 +1,8 @@
-#ifndef EVENTBUSCPP_DISPLAYBOARD_HPP
-#define EVENTBUSCPP_DISPLAYBOARD_HPP
+#ifndef CPPEVENTS_DEMO_DISPLAYBOARD_HPP
+#define CPPEVENTS_DEMO_DISPLAYBOARD_HPP
 
 #include <iostream>
+#include <string>
 
 #include "EventBus.hpp"
 
@@ -9,26 +10,43 @@ class DisplayBoard
 {
 public:
     explicit DisplayBoard(EventBus& bus)
+        : bus_(bus)
     {
-        bus.trainArrived      += std::pair(this, &DisplayBoard::showTrainArrived);
-        bus.trainDeparted     += std::pair(this, &DisplayBoard::showTrainDeparted);
-        bus.passengerBoarded  += std::pair(this, &DisplayBoard::showPassengerBoarded);
+        arrivedId_  = bus_.trainArrived     += std::pair(this, &DisplayBoard::showTrainArrived);
+        departedId_ = bus_.trainDeparted    += std::pair(this, &DisplayBoard::showTrainDeparted);
+        boardedId_  = bus_.passengerBoarded += std::pair(this, &DisplayBoard::showPassengerBoarded);
     }
 
-    void showTrainArrived(const std::string& name)
+    ~DisplayBoard()
+    {
+        bus_.trainArrived     -= arrivedId_;
+        bus_.trainDeparted    -= departedId_;
+        bus_.passengerBoarded -= boardedId_;
+    }
+
+    DisplayBoard(const DisplayBoard&) = delete;
+    DisplayBoard& operator=(const DisplayBoard&) = delete;
+
+    void showTrainArrived(const std::string& name) const
     {
         std::cout << "[DisplayBoard] Arrival: " << name << "\n";
     }
 
-    void showTrainDeparted(const std::string& name)
+    void showTrainDeparted(const std::string& name) const
     {
         std::cout << "[DisplayBoard] Departure: " << name << "\n";
     }
 
-    void showPassengerBoarded(int id, const std::string& name)
+    void showPassengerBoarded(int id, const std::string& name) const
     {
         std::cout << "[DisplayBoard] Passenger " << id << " in " << name << "\n";
     }
+
+private:
+    EventBus& bus_;
+    CppEvents::Event<std::string>::ConnectionId arrivedId_{0};
+    CppEvents::Event<std::string>::ConnectionId departedId_{0};
+    CppEvents::Event<int, std::string>::ConnectionId boardedId_{0};
 };
 
-#endif //EVENTBUSCPP_DISPLAYBOARD_HPP
+#endif // CPPEVENTS_DEMO_DISPLAYBOARD_HPP

@@ -1,23 +1,36 @@
-#ifndef EVENTBUSCPP_ALARMLISTENER_HPP
-#define EVENTBUSCPP_ALARMLISTENER_HPP
+#ifndef CPPEVENTS_DEMO_ALARMLISTENER_HPP
+#define CPPEVENTS_DEMO_ALARMLISTENER_HPP
 
 #include <iostream>
+#include <string>
 
 #include "Alarm.hpp"
-#include "Event.hpp"
 
 class AlarmListener
 {
 public:
     explicit AlarmListener(Alarm& alarm)
+        : alarm_(alarm)
     {
-        alarm.triggered += std::pair(this, &AlarmListener::onAlarm);
+        connectionId_ = alarm_.triggered += std::pair(this, &AlarmListener::onAlarm);
     }
 
-    void onAlarm(const std::string& msg)
+    ~AlarmListener()
+    {
+        alarm_.triggered -= connectionId_;
+    }
+
+    AlarmListener(const AlarmListener&) = delete;
+    AlarmListener& operator=(const AlarmListener&) = delete;
+
+    void onAlarm(const std::string& msg) const
     {
         std::cout << "[AlarmListener] Alarm: " << msg << "\n";
     }
+
+private:
+    Alarm& alarm_;
+    CppEvents::Event<std::string>::ConnectionId connectionId_{0};
 };
 
-#endif //EVENTBUSCPP_ALARMLISTENER_HPP
+#endif // CPPEVENTS_DEMO_ALARMLISTENER_HPP

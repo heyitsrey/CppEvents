@@ -1,3 +1,4 @@
+#include "Alarm.hpp"
 #include "AlarmListener.hpp"
 
 int main()
@@ -6,4 +7,6 @@ int main()
     AlarmListener listener(alarm);
 
     alarm.trigger("Intruder detected");
+
+    return 0;
 }
